@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Life Tracker App</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Source+Sans+Pro:wght@400;600&display=swap");
+
+      :root {
+        --primary: #3a7ca5;
+        --secondary: #16c172;
+        --background: #f2f2f2;
+        --accent1: #d81e5b;
+        --accent2: #ffc857;
+        --dark: #333333;
+        --light: #ffffff;
+        --error: #d81e5b;
+        --success: #16c172;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Source Sans Pro", sans-serif;
+        background-color: var(--background);
+        color: var(--dark);
+        max-width: 100%;
+        overflow-x: hidden;
+        position: relative;
+        min-height: 100vh;
+      }
+
+      .container {
+        padding: 15px;
+        padding-bottom: 80px;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-family: "Montserrat", sans-serif;
+        font-weight: 600;
+        color: var(--dark);
+      }
+
+      .header {
+        padding: 15px 20px;
+        background-color: var(--light);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+      }
+
+      .logo img {
+        height: 30px;
+        margin-right: 8px;
+      }
+
+      .logo h1 {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--primary);
+      }
+
+      .profile-icon {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background-color: var(--primary);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        font-weight: bold;
+      }
+
+      .page-title {
+        font-size: 22px;
+        margin: 20px 0 15px;
+        font-weight: 700;
+      }
+
+      .date-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 15px;
+      }
+
+      .date-header h2 {
+        font-size: 18px;
+        font-weight: 600;
+      }
+
+      .date-picker {
+        padding: 8px 12px;
+        background-color: var(--light);
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+      }
+
+      .date-picker span {
+        margin-right: 8px;
+      }
+
+      .card {
+        background-color: var(--light);
+        border-radius: 12px;
+        padding: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+
+      .card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 15px;
+      }
+
+      .card-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--primary);
+      }
+
+      .card-action {
+        color: var(--primary);
+        font-size: 14px;
+        cursor: pointer;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-bottom: 15px;
+      }
+
+      .stat-item {
+        background-color: var(--background);
+        border-radius: 8px;
+        padding: 12px;
+        text-align: center;
+      }
+
+      .stat-value {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--primary);
+        margin: 5px 0;
+      }
+
+      .stat-label {
+        font-size: 12px;
+        color: #666;
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 12px 24px;
+        background-color: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-family: "Montserrat", sans-serif;
+        font-weight: 600;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        text-align: center;
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      .btn:hover {
+        background-color: #2d6a8e;
+      }
+
+      .btn-secondary {
+        background-color: var(--light);
+        color: var(--primary);
+        border: 1px solid var(--primary);
+      }
+
+      .btn-secondary:hover {
+        background-color: #f5f5f5;
+      }
+
+      .nav-bar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: var(--light);
+        display: flex;
+        justify-content: space-around;
+        padding: 10px 0;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: #999;
+        font-size: 12px;
+      }
+
+      .nav-item.active {
+        color: var(--primary);
+      }
+
+      .nav-icon {
+        font-size: 22px;
+        margin-bottom: 4px;
+      }
+
+      .chart-container {
+        height: 200px;
+        position: relative;
+        margin: 20px 0;
+      }
+
+      .chart-bars {
+        display: flex;
+        align-items: flex-end;
+        height: 150px;
+        justify-content: space-between;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #e0e0e0;
+      }
+
+      .chart-bar {
+        width: 12%;
+        background-color: var(--primary);
+        border-radius: 4px 4px 0 0;
+        position: relative;
+      }
+
+      .chart-bar-label {
+        position: absolute;
+        bottom: -25px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 10px;
+        color: #666;
+        white-space: nowrap;
+      }
+
+      .chart-legend {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        font-size: 12px;
+        color: #666;
+      }
+
+      .progress-container {
+        margin: 15px 0;
+      }
+
+      .progress-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+        font-size: 14px;
+      }
+
+      .progress-bar {
+        height: 8px;
+        background-color: #e0e0e0;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+
+      .progress-fill {
+        height: 100%;
+        background-color: var(--secondary);
+        border-radius: 4px;
+      }
+
+      .achievement-item {
+        display: flex;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid #eee;
+      }
+
+      .achievement-item:last-child {
+        border-bottom: none;
+      }
+
+      .achievement-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: var(--background);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 12px;
+        color: var(--primary);
+      }
+
+      .achievement-info {
+        flex: 1;
+      }
+
+      .achievement-title {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 3px;
+      }
+
+      .achievement-desc {
+        font-size: 12px;
+        color: #666;
+      }
+
+      .list-item {
+        display: flex;
+        align-items: center;
+        padding: 15px 0;
+        border-bottom: 1px solid #eee;
+      }
+
+      .list-item:last-child {
+        border-bottom: none;
+      }
+
+      .list-icon {
+        width: 24px;
+        margin-right: 15px;
+        color: var(--primary);
+      }
+
+      .list-content {
+        flex: 1;
+      }
+
+      .list-title {
+        font-size: 15px;
+        font-weight: 600;
+        margin-bottom: 3px;
+      }
+
+      .list-subtitle {
+        font-size: 13px;
+        color: #666;
+      }
+
+      .list-action {
+        color: #999;
+      }
+
+      .tab-container {
+        display: flex;
+        margin-bottom: 15px;
+        background-color: var(--light);
+        border-radius: 8px;
+        padding: 4px;
+      }
+
+      .tab {
+        flex: 1;
+        text-align: center;
+        padding: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #666;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+
+      .tab.active {
+        background-color: var(--primary);
+        color: white;
+      }
+
+      .profile-header {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .profile-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background-color: var(--primary);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 30px;
+        font-weight: bold;
+        margin: 0 auto 10px;
+      }
+
+      .profile-name {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 5px;
+      }
+
+      .profile-email {
+        font-size: 14px;
+        color: #666;
+      }
+
+      .settings-section {
+        margin-bottom: 20px;
+      }
+
+      .settings-section-title {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #666;
+        text-transform: uppercase;
+      }
+
+      .page-container {
+        display: none;
+      }
+
+      .page-container.active {
+        display: block;
+      }
+
+      /* Zusätzliche Stile aus tageseintrag.html */
+      .recent-entries {
+        background-color: var(--light);
+        border-radius: 12px;
+        padding: 15px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+
+      .recent-entries h3 {
+        font-size: 16px;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .recent-entries h3 span {
+        color: var(--primary);
+        font-size: 14px;
+      }
+
+      .entry-list {
+        display: flex;
+        gap: 12px;
+        overflow-x: auto;
+        padding-bottom: 5px;
+      }
+
+      .entry-item {
+        min-width: 130px;
+        padding: 12px;
+        background-color: var(--background);
+        border-radius: 8px;
+        border-left: 3px solid var(--primary);
+      }
+
+      .entry-item h4 {
+        font-size: 14px;
+        margin-bottom: 5px;
+      }
+
+      .entry-item p {
+        font-size: 12px;
+        color: #666;
+      }
+
+      .entry-item .entry-value {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--primary);
+        margin: 6px 0;
+      }
+
+      .form-container {
+        background-color: var(--light);
+        border-radius: 12px;
+        padding: 20px 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+
+      .form-section {
+        margin-bottom: 20px;
+      }
+
+      .form-section h3 {
+        font-size: 16px;
+        margin-bottom: 12px;
+        color: var(--primary);
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      .form-group label {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 6px;
+        font-weight: 600;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+        font-family: "Source Sans Pro", sans-serif;
+        font-size: 15px;
+      }
+
+      .input-error {
+        border-color: var(--error);
+      }
+
+      .error-message {
+        color: var(--error);
+        font-size: 12px;
+        margin-top: 4px;
+      }
+
+      .switch-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 0;
+      }
+
+      .switch-label {
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 24px;
+      }
+
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: 0.4s;
+        border-radius: 24px;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 16px;
+        width: 16px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 50%;
+      }
+
+      input:checked + .slider {
+        background-color: var(--secondary);
+      }
+
+      input:checked + .slider:before {
+        transform: translateX(26px);
+      }
+
+      .radio-group {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+      }
+
+      .radio-option {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 20%;
+      }
+
+      .radio-circle {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 5px;
+        cursor: pointer;
+        background-color: var(--background);
+        transition: all 0.3s;
+      }
+
+      .radio-option:nth-child(1) .radio-circle.selected {
+        background-color: var(--accent1);
+      }
+
+      .radio-option:nth-child(2) .radio-circle.selected {
+        background-color: #ff8a5e;
+      }
+
+      .radio-option:nth-child(3) .radio-circle.selected {
+        background-color: var(--accent2);
+      }
+
+      .radio-option:nth-child(4) .radio-circle.selected {
+        background-color: #83d483;
+      }
+
+      .radio-option:nth-child(5) .radio-circle.selected {
+        background-color: var(--secondary);
+      }
+
+      .radio-label {
+        font-size: 12px;
+        text-align: center;
+      }
+
+      .slider-container {
+        padding: 10px 0;
+      }
+
+      .range-slider {
+        width: 100%;
+        -webkit-appearance: none;
+        height: 8px;
+        border-radius: 5px;
+        background: #e0e0e0;
+        outline: none;
+        margin: 15px 0;
+      }
+
+      .range-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: var(--primary);
+        cursor: pointer;
+      }
+
+      .range-values {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 5px;
+      }
+
+      .range-values span {
+        font-size: 12px;
+        color: #666;
+      }
+
+      .select-container {
+        position: relative;
+      }
+
+      .select-container::after {
+        content: "▼";
+        font-size: 12px;
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+      }
+
+      select.form-control {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        padding-right: 30px;
+      }
+
+      .summary-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+      }
+
+      .summary-modal {
+        width: 90%;
+        max-width: 400px;
+        background-color: var(--light);
+        border-radius: 12px;
+        padding: 20px;
+      }
+
+      .summary-header {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .summary-header h3 {
+        font-size: 20px;
+        color: var(--primary);
+      }
+
+      .summary-item {
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .summary-item:last-child {
+        border-bottom: none;
+      }
+
+      .summary-label {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 5px;
+      }
+
+      .summary-value {
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      .summary-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .summary-actions button {
+        flex: 1;
+      }
+
+      @media (min-width: 768px) {
+        .container {
+          max-width: 600px;
+          margin: 0 auto;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="header">
+      <div class="logo">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+          <path
+            d="M15 2C8.373 2 3 7.373 3 14C3 20.627 8.373 26 15 26C21.627 26 27 20.627 27 14C27 7.373 21.627 2 15 2ZM15 24C9.486 24 5 19.514 5 14C5 8.486 9.486 4 15 4C20.514 4 25 8.486 25 14C25 19.514 20.514 24 15 24Z"
+            fill="#3A7CA5"
+          />
+          <path
+            d="M20 14H16V10C16 9.448 15.552 9 15 9C14.448 9 14 9.448 14 10V14H10C9.448 14 9 14.448 9 15C9 15.552 9.448 16 10 16H14V20C14 20.552 14.448 21 15 21C15.552 21 16 20.552 16 20V16H20C20.552 16 21 15.552 21 15C21 14.448 20.552 14 20 14Z"
+            fill="#16C172"
+          />
+        </svg>
+        <h1>Life Tracker</h1>
+      </div>
+      <div class="profile-icon">TW</div>
+    </div>
+
+    <!-- Dashboard Page -->
+    <div id="dashboard-page" class="page-container active">
+      <div class="container">
+        <h1 class="page-title">Dashboard</h1>
+
+        <div class="date-header">
+          <h2>Übersicht</h2>
+          <div class="date-picker">
+            <span>Diese Woche</span>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path
+                d="M4 6L8 10L12 6"
+                stroke="#333333"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Tagesübersicht</div>
+            <div class="card-action">12.05.2025</div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-item">
+              <div class="stat-value">78,5</div>
+              <div class="stat-label">Gewicht (kg)</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">120/80</div>
+              <div class="stat-label">Blutdruck</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">2,1L</div>
+              <div class="stat-label">Wasser</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">7,5h</div>
+              <div class="stat-label">Schlaf</div>
+            </div>
+          </div>
+
+          <div class="progress-container">
+            <div class="progress-header">
+              <span>Tägliche Schritte</span>
+              <span>7.543 / 10.000</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 75%"></div>
+            </div>
+          </div>
+
+          <div class="progress-container">
+            <div class="progress-header">
+              <span>Kalorienaufnahme</span>
+              <span>1.850 / 2.200</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 84%"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Aktivitätsverlauf</div>
+            <div class="card-action">Mehr</div>
+          </div>
+
+          <div class="chart-container">
+            <div class="chart-bars">
+              <div class="chart-bar" style="height: 40%">
+                <div class="chart-bar-label">Mo</div>
+              </div>
+              <div class="chart-bar" style="height: 65%">
+                <div class="chart-bar-label">Di</div>
+              </div>
+              <div class="chart-bar" style="height: 30%">
+                <div class="chart-bar-label">Mi</div>
+              </div>
+              <div class="chart-bar" style="height: 85%">
+                <div class="chart-bar-label">Do</div>
+              </div>
+              <div class="chart-bar" style="height: 50%">
+                <div class="chart-bar-label">Fr</div>
+              </div>
+              <div class="chart-bar" style="height: 70%">
+                <div class="chart-bar-label">Sa</div>
+              </div>
+              <div class="chart-bar" style="height: 45%">
+                <div class="chart-bar-label">So</div>
+              </div>
+            </div>
+            <div class="chart-legend">
+              <span>Diese Woche</span>
+              <span>Aktivitätsminuten: 245</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Erfolge & Ziele</div>
+            <div class="card-action">Alle</div>
+          </div>
+
+          <div class="achievement-item">
+            <div class="achievement-icon">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12 6V9L16 5L12 1V4C7.58 4 4 7.58 4 12C4 13.57 4.46 15.03 5.24 16.26L6.7 14.8C6.25 13.97 6 13.01 6 12C6 8.69 8.69 6 12 6ZM18.76 7.74L17.3 9.2C17.74 10.04 18 10.99 18 12C18 15.31 15.31 18 12 18V15L8 19L12 23V20C16.42 20 20 16.42 20 12C20 10.43 19.54 8.97 18.76 7.74Z"
+                  fill="#3A7CA5"
+                />
+              </svg>
+            </div>
+            <div class="achievement-info">
+              <div class="achievement-title">7-Tage Serie</div>
+              <div class="achievement-desc">
+                Du hast 7 Tage in Folge Daten erfasst
+              </div>
+            </div>
+          </div>
+
+          <div class="achievement-item">
+            <div class="achievement-icon">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M19 5H17V3H7V5H5C3.9 5 3 5.9 3 7V8C3 10.55 4.92 12.63 7.39 12.94C8.02 14.44 9.37 15.57 11 15.9V19H7V21H17V19H13V15.9C14.63 15.57 15.98 14.44 16.61 12.94C19.08 12.63 21 10.55 21 8V7C21 5.9 20.1 5 19 5ZM5 8V7H7V10.82C5.84 10.4 5 9.3 5 8ZM12 14C10.35 14 9 12.65 9 11V5H15V11C15 12.65 13.65 14 12 14ZM19 8C19 9.3 18.16 10.4 17 10.82V7H19V8Z"
+                  fill="#3A7CA5"
+                />
+              </svg>
+            </div>
+            <div class="achievement-info">
+              <div class="achievement-title">Gewichtsziel erreicht</div>
+              <div class="achievement-desc">-3kg in 30 Tagen</div>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn" onclick="changePage('eingabe')">
+          Neuen Eintrag erstellen
+        </button>
+      </div>
+    </div>
+
+    <!-- Eingabe Page (Schnellerfassung) -->
+    <div id="eingabe-page" class="page-container">
+      <div class="container">
+        <h1 class="page-title">Tageseintrag</h1>
+
+        <div class="date-header">
+          <h2>Heute erfassen</h2>
+          <div class="date-picker">
+            <span>12.05.2025</span>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path
+                d="M12 2H11V1H10V2H6V1H5V2H4C3.45 2 3 2.45 3 3V13C3 13.55 3.45 14 4 14H12C12.55 14 13 13.55 13 13V3C13 2.45 12.55 2 12 2ZM12 13H4V6H12V13ZM12 5H4V3H12V5Z"
+                fill="#333333"
+              />
+            </svg>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Schnellerfassung</div>
+            <div class="card-action">Alles anzeigen</div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-item">
+              <div class="stat-label">Gewicht</div>
+              <div class="stat-value">78,5</div>
+              <div class="stat-label">kg</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Blutdruck</div>
+              <div class="stat-value">120/80</div>
+              <div class="stat-label">mmHg</div>
+            </div>
+          </div>
+
+          <button class="btn" onclick="changePage('tageseintrag')">
+            Vollständigen Eintrag erstellen
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tageseintrag Page (Vollständiger Eintrag) -->
+    <div id="tageseintrag-page" class="page-container">
+      <div class="container">
+        <h1 class="page-title">Tageseintrag</h1>
+
+        <div class="date-header">
+          <h2>Heute erfassen</h2>
+          <div class="date-picker">
+            <span>12.05.2025</span>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path
+                d="M12 2H11V1H10V2H6V1H5V2H4C3.45 2 3 2.45 3 3V13C3 13.55 3.45 14 4 14H12C12.55 14 13 13.55 13 13V3C13 2.45 12.55 2 12 2ZM12 13H4V6H12V13ZM12 5H4V3H12V5Z"
+                fill="#333333"
+              />
+            </svg>
+          </div>
+        </div>
+
+        <div class="recent-entries">
+          <h3>Letzte Einträge <span>Alle anzeigen</span></h3>
+          <div class="entry-list">
+            <div class="entry-item">
+              <h4>Gewicht</h4>
+              <div class="entry-value">78,5</div>
+              <p>11.05.2025</p>
+            </div>
+            <div class="entry-item">
+              <h4>Blutdruck</h4>
+              <div class="entry-value">120/80</div>
+              <p>11.05.2025</p>
+            </div>
+            <div class="entry-item">
+              <h4>Stimmung</h4>
+              <div class="entry-value">😊</div>
+              <p>11.05.2025</p>
+            </div>
+            <div class="entry-item">
+              <h4>Schlafstunden</h4>
+              <div class="entry-value">7,5h</div>
+              <p>11.05.2025</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-container">
+          <div class="form-section">
+            <h3>Körperliche Messungen</h3>
+
+            <div class="form-group">
+              <label for="weight">Gewicht (kg)</label>
+              <input
+                type="number"
+                step="0.1"
+                id="weight"
+                class="form-control"
+                placeholder="z.B. 75.5"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="blood-pressure">Blutdruck (mmHg)</label>
+              <input
+                type="text"
+                id="blood-pressure"
+                class="form-control input-error"
+                placeholder="z.B. 120/80"
+              />
+              <div class="error-message">
+                Bitte im Format "120/80" eingeben.
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="heart-rate">Herzfrequenz (bpm)</label>
+              <input
+                type="number"
+                id="heart-rate"
+                class="form-control"
+                placeholder="z.B. 72"
+              />
+            </div>
+
+            <div class="slider-container">
+              <label for="sleep-quality">Schlafqualität</label>
+              <input
+                type="range"
+                min="1"
+                max="10"
+                value="7"
+                class="range-slider"
+                id="sleep-quality"
+              />
+              <div class="range-values">
+                <span>Schlecht</span>
+                <span>Mittel</span>
+                <span>Ausgezeichnet</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>Ernährung</h3>
+
+            <div class="form-group">
+              <label for="meal-type">Mahlzeitentyp</label>
+              <div class="select-container">
+                <select id="meal-type" class="form-control">
+                  <option value="">Bitte auswählen</option>
+                  <option value="breakfast">Frühstück</option>
+                  <option value="lunch">Mittagessen</option>
+                  <option value="dinner">Abendessen</option>
+                  <option value="snack">Snack</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="calories">Kalorienaufnahme (kcal)</label>
+              <input
+                type="number"
+                id="calories"
+                class="form-control"
+                placeholder="z.B. 550"
+              />
+            </div>
+
+            <div class="slider-container">
+              <label for="water-intake">Wasserzufuhr (Liter)</label>
+              <input
+                type="range"
+                min="0"
+                max="5"
+                step="0.1"
+                value="1.5"
+                class="range-slider"
+                id="water-intake"
+              />
+              <div class="range-values">
+                <span>0L</span>
+                <span>2.5L</span>
+                <span>5L</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>Aktivität</h3>
+
+            <div class="switch-container">
+              <span class="switch-label">Sport gemacht</span>
+              <label class="switch">
+                <input type="checkbox" checked />
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="switch-container">
+              <span class="switch-label">10.000 Schritte erreicht</span>
+              <label class="switch">
+                <input type="checkbox" />
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="form-group">
+              <label for="activity-minutes">Aktivitätsminuten</label>
+              <input
+                type="number"
+                id="activity-minutes"
+                class="form-control"
+                placeholder="z.B. 45"
+              />
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>Stimmung und mentale Verfassung</h3>
+
+            <div class="form-group">
+              <label>Wie ist deine Stimmung heute?</label>
+              <div class="radio-group">
+                <div class="radio-option">
+                  <div class="radio-circle">
+                    <span>😞</span>
+                  </div>
+                  <span class="radio-label">Schlecht</span>
+                </div>
+                <div class="radio-option">
+                  <div class="radio-circle">
+                    <span>😕</span>
+                  </div>
+                  <span class="radio-label">Mäßig</span>
+                </div>
+                <div class="radio-option">
+                  <div class="radio-circle selected">
+                    <span>😐</span>
+                  </div>
+                  <span class="radio-label">OK</span>
+                </div>
+                <div class="radio-option">
+                  <div class="radio-circle">
+                    <span>🙂</span>
+                  </div>
+                  <span class="radio-label">Gut</span>
+                </div>
+                <div class="radio-option">
+                  <div class="radio-circle">
+                    <span>😊</span>
+                  </div>
+                  <span class="radio-label">Sehr gut</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="slider-container">
+              <label for="stress-level">Stresslevel</label>
+              <input
+                type="range"
+                min="1"
+                max="10"
+                value="4"
+                class="range-slider"
+                id="stress-level"
+              />
+              <div class="range-values">
+                <span>Niedrig</span>
+                <span>Mittel</span>
+                <span>Hoch</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="notes">Persönliche Notizen</label>
+              <textarea
+                id="notes"
+                class="form-control"
+                rows="3"
+                placeholder="Notiere hier deine Gedanken, Gefühle oder besondere Ereignisse..."
+              ></textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="btn" onclick="showSummary()">
+            Eintrag speichern
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Auswertung Page -->
+    <div id="auswertung-page" class="page-container">
+      <div class="container">
+        <h1 class="page-title">Auswertung</h1>
+
+        <div class="tab-container">
+          <div class="tab active">Woche</div>
+          <div class="tab">Monat</div>
+          <div class="tab">Jahr</div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Gewichtsverlauf</div>
+            <div class="card-action">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path
+                  d="M8 12C10.2091 12 12 10.2091 12 8C12 5.79086 10.2091 4 8 4C5.79086 4 4 5.79086 4 8C4 10.2091 5.79086 12 8 12Z"
+                  stroke="#3A7CA5"
+                  stroke-width="2"
+                />
+                <path
+                  d="M8 6V8H10"
+                  stroke="#3A7CA5"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <div class="chart-container">
+            <div class="chart-bars">
+              <div class="chart-bar" style="height: 65%">
+                <div class="chart-bar-label">06.05</div>
+              </div>
+              <div class="chart-bar" style="height: 60%">
+                <div class="chart-bar-label">07.05</div>
+              </div>
+              <div class="chart-bar" style="height: 63%">
+                <div class="chart-bar-label">08.05</div>
+              </div>
+              <div class="chart-bar" style="height: 59%">
+                <div class="chart-bar-label">09.05</div>
+              </div>
+              <div class="chart-bar" style="height: 58%">
+                <div class="chart-bar-label">10.05</div>
+              </div>
+              <div class="chart-bar" style="height: 57%">
+                <div class="chart-bar-label">11.05</div>
+              </div>
+              <div class="chart-bar" style="height: 55%">
+                <div class="chart-bar-label">12.05</div>
+              </div>
+            </div>
+            <div class="chart-legend">
+              <span>77,0 kg</span>
+              <span>Trend: -0,5 kg</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Korrelationen</div>
+            <div class="card-action">Mehr</div>
+          </div>
+
+          <div class="list-item">
+            <div class="list-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M8 5V19L19 12L8 5Z" fill="#3A7CA5" />
+              </svg>
+            </div>
+            <div class="list-content">
+              <div class="list-title">Besserer Schlaf nach Sport</div>
+              <div class="list-subtitle">
+                An Tagen mit >30min Sport schläfst du im Schnitt 1.2h länger
+              </div>
+            </div>
+          </div>
+
+          <div class="list-item">
+            <div class="list-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M8 5V19L19 12L8 5Z" fill="#3A7CA5" />
+              </svg>
+            </div>
+            <div class="list-content">
+              <div class="list-title">Stress & Blutdruck</div>
+              <div class="list-subtitle">
+                Hoher Stresslevel korreliert mit erhöhtem Blutdruck
+              </div>
+            </div>
+          </div>
+
+          <div class="list-item">
+            <div class="list-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M8 5V19L19 12L8 5Z" fill="#3A7CA5" />
+              </svg>
+            </div>
+            <div class="list-content">
+              <div class="list-title">Ernährung & Energie</div>
+              <div class="list-subtitle">
+                Protein-reiche Mahlzeiten verbessern deine Stimmung
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Gesundheitsberichte</div>
+            <div class="card-action">Alle</div>
+          </div>
+
+          <div class="list-item">
+            <div class="list-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V8L14 2ZM16 18H8V16H16V18ZM16 14H8V12H16V14ZM13 9V3.5L18.5 9H13Z"
+                  fill="#3A7CA5"
+                />
+              </svg>
+            </div>
+            <div class="list-content">
+              <div class="list-title">Monatsbericht April</div>
+              <div class="list-subtitle">Erstellt am 01.05.2025</div>
+            </div>
+            <div class="list-action">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M8 5V19L19 12L8 5Z" fill="#999999" />
+              </svg>
+            </div>
+          </div>
+
+          <div class="list-item">
+            <div class="list-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V8L14 2ZM16 18H8V16H16V18ZM16 14H8V12H16V14ZM13 9V3.5L18.5 9H13Z"
+                  fill="#3A7CA5"
+                />
+              </svg>
+            </div>
+            <div class="list-content">
+              <div class="list-title">Quartalsbericht Q1</div>
+              <div class="list-subtitle">Erstellt am 05.04.2025</div>
+            </div>
+            <div class="list-action">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M8 5V19L19 12L8 5Z" fill="#999999" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profil Page -->
+    <div id="profil-page" class="page-container">
+      <div class="container">
+        <h1 class="page-title">Profil</h1>
+
+        <div class="profile-header">
+          <div class="profile-avatar">TW</div>
+          <div class="profile-name">Thomas Weber</div>
+          <div class="profile-email">t.weber@example.com</div>
+        </div>
+
+        <div class="card">
+          <div class="settings-section">
+            <div class="settings-section-title">Persönliche Daten</div>
+
+            <div class="list-item">
+              <div class="list-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z"
+                    fill="#3A7CA5"
+                  />
+                </svg>
+              </div>
+              <div class="list-content">
+                <div class="list-title">Profil bearbeiten</div>
+                <div class="list-subtitle">Name, E-Mail, Passwort</div>
+              </div>
+              <div class="list-action">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M8.59 16.59L13.17 12L8.59 7.41L10 6L16 12L10 18L8.59 16.59Z"
+                    fill="#999999"
+                  />
+                </svg>
+              </div>
+            </div>
+
+            <div class="list-item">
+              <div class="list-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM19 5V7H5V5H19ZM5 19V9H19V19H5ZM7 11H17V13H7V11ZM7 15H12V17H7V15Z"
+                    fill="#3A7CA5"
+                  />
+                </svg>
+              </div>
+              <div class="list-content">
+                <div class="list-title">Gesundheitsprofil</div>
+                <div class="list-subtitle">Alter, Größe, Zielsetzungen</div>
+              </div>
+              <div class="list-action">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M8.59 16.59L13.17 12L8.59 7.41L10 6L16 12L10 18L8.59 16.59Z"
+                    fill="#999999"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-section">
+            <div class="settings-section-title">Einstellungen</div>
+
+            <div class="list-item">
+              <div class="list-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M12 22C6.49 22 2 17.51 2 12C2 6.49 6.49 2 12 2C17.51 2 22 6.04 22 12C22 17.51 17.51 22 12 22ZM12 4C7.59 4 4 7.59 4 12C4 16.41 7.59 20 12 20C16.41 20 20 16.41 20 12C20 7.59 16.41 4 12 4ZM12 18C8.69 18 6 15.31 6 12C6 8.69 8.69 6 12 6C15.31 6 18 8.69 18 12C18 15.31 15.31 18 12 18ZM12 8C9.79 8 8 9.79 8 12C8 14.21 9.79 16 12 16C14.21 16 16 14.21 16 12C16 9.79 14.21 8 12 8Z"
+                    fill="#3A7CA5"
+                  />
+                </svg>
+              </div>
+              <div class="list-content">
+                <div class="list-title">App-Einstellungen</div>
+                <div class="list-subtitle">Benachrichtigungen, Sprache</div>
+              </div>
+              <div class="list-action">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M8.59 16.59L13.17 12L8.59 7.41L10 6L16 12L10 18L8.59 16.59Z"
+                    fill="#999999"
+                  />
+                </svg>
+              </div>
+            </div>
+
+            <div class="list-item">
+              <div class="list-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M12 1L3 5V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V5L12 1ZM12 11.99H19C18.47 16.11 15.72 19.78 12 20.93V12H5V6.3L12 3.19V11.99Z"
+                    fill="#3A7CA5"
+                  />
+                </svg>
+              </div>
+              <div class="list-content">
+                <div class="list-title">Datenschutz</div>
+                <div class="list-subtitle">Datenfreigabe, Berechtigungen</div>
+              </div>
+              <div class="list-action">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M8.59 16.59L13.17 12L8.59 7.41L10 6L16 12L10 18L8.59 16.59Z"
+                    fill="#999999"
+                  />
+                </svg>
+              </div>
+            </div>
+
+            <div class="list-item">
+              <div class="list-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M11 7H13V9H11V7ZM11 11H13V17H11V11ZM12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20Z"
+                    fill="#3A7CA5"
+                  />
+                </svg>
+              </div>
+              <div class="list-content">
+                <div class="list-title">Hilfe & Support</div>
+                <div class="list-subtitle">FAQ, Kontakt, Feedback</div>
+              </div>
+              <div class="list-action">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M8.59 16.59L13.17 12L8.59 7.41L10 6L16 12L10 18L8.59 16.59Z"
+                    fill="#999999"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-section">
+            <div class="settings-section-title">Gesundheitsverbindungen</div>
+
+            <div class="list-item">
+              <div class="list-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM18 14H14V18H10V14H6V10H10V6H14V10H18V14Z"
+                    fill="#3A7CA5"
+                  />
+                </svg>
+              </div>
+              <div class="list-content">
+                <div class="list-title">Gesundheitsdienstleister</div>
+                <div class="list-subtitle">Ärzte, Coaches, Therapeuten</div>
+              </div>
+              <div class="list-action">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M8.59 16.59L13.17 12L8.59 7.41L10 6L16 12L10 18L8.59 16.59Z"
+                    fill="#999999"
+                  />
+                </svg>
+              </div>
+            </div>
+
+            <div class="list-item">
+              <div class="list-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M13 3C8.03 3 4 7.03 4 12H1L4.89 15.89L4.96 16.03L9 12H6C6 8.13 9.13 5 13 5C16.87 5 20 8.13 20 12C20 15.87 16.87 19 13 19C11.07 19 9.32 18.21 8.06 16.94L6.64 18.36C8.27 19.99 10.51 21 13 21C17.97 21 22 16.97 22 12C22 7.03 17.97 3 13 3ZM12 8V13L16.28 15.54L17 14.33L13.5 12.25V8H12Z"
+                    fill="#3A7CA5"
+                  />
+                </svg>
+              </div>
+              <div class="list-content">
+                <div class="list-title">Geräteverbindungen</div>
+                <div class="list-subtitle">
+                  Smart-Watches, Waagen, Blutdruckmessgeräte
+                </div>
+              </div>
+              <div class="list-action">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M8.59 16.59L13.17 12L8.59 7.41L10 6L16 12L10 18L8.59 16.59Z"
+                    fill="#999999"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn-secondary">Abmelden</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Zusammenfassung Modal -->
+    <div id="summary-container" class="summary-container" style="display: none">
+      <div class="summary-modal">
+        <div class="summary-header">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <circle cx="20" cy="20" r="18" fill="#16C172" fillOpacity="0.2" />
+            <path
+              d="M17 24L13 20L11 22L17 28L29 16L27 14L17 24Z"
+              fill="#16C172"
+            />
+          </svg>
+          <h3>Eintrag gespeichert</h3>
+        </div>
+
+        <div class="summary-item">
+          <div class="summary-label">Datum</div>
+          <div class="summary-value">12.05.2025</div>
+        </div>
+
+        <div class="summary-item">
+          <div class="summary-label">Gewicht</div>
+          <div class="summary-value">78,5 kg</div>
+        </div>
+
+        <div class="summary-item">
+          <div class="summary-label">Blutdruck</div>
+          <div class="summary-value">120/80 mmHg</div>
+        </div>
+
+        <div class="summary-item">
+          <div class="summary-label">Stimmung</div>
+          <div class="summary-value">Neutral 😐</div>
+        </div>
+
+        <div class="summary-item">
+          <div class="summary-label">Aktivität</div>
+          <div class="summary-value">Sport ✓ | 45 Minuten</div>
+        </div>
+
+        <div class="summary-actions">
+          <button class="btn btn-secondary" onclick="hideSummary()">
+            Bearbeiten
+          </button>
+          <button class="btn" onclick="saveAndReturn()">Fertig</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-bar">
+      <div class="nav-item" onclick="changePage('dashboard')">
+        <div class="nav-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M3 13H11V3H3V13ZM3 21H11V15H3V21ZM13 21H21V11H13V21ZM13 3V9H21V3H13Z"
+              fill="#999"
+            />
+          </svg>
+        </div>
+        <span>Dashboard</span>
+      </div>
+      <div class="nav-item" onclick="changePage('eingabe')">
+        <div class="nav-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M19 3H5C3.89 3 3 3.9 3 5V19C3 20.1 3.89 21 5 21H19C20.11 21 21 20.1 21 19V5C21 3.9 20.11 3 19 3ZM19 19H5V5H19V19ZM11 17H13V7H11V17ZM7 17H9V13H7V17ZM15 17H17V10H15V17Z"
+              fill="#999"
+            />
+          </svg>
+        </div>
+        <span>Eingabe</span>
+      </div>
+      <div class="nav-item" onclick="changePage('auswertung')">
+        <div class="nav-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM9 17H7V10H9V17ZM13 17H11V7H13V17ZM17 17H15V13H17V17Z"
+              fill="#999"
+            />
+          </svg>
+        </div>
+        <span>Auswertung</span>
+      </div>
+      <div class="nav-item" onclick="changePage('profil')">
+        <div class="nav-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 5C13.66 5 15 6.34 15 8C15 9.66 13.66 11 12 11C10.34 11 9 9.66 9 8C9 6.34 10.34 5 12 5ZM12 19.2C9.5 19.2 7.29 17.92 6 15.98C6.03 13.99 10 12.9 12 12.9C13.99 12.9 17.97 13.99 18 15.98C16.71 17.92 14.5 19.2 12 19.2Z"
+              fill="#999"
+            />
+          </svg>
+        </div>
+        <span>Profil</span>
+      </div>
+    </div>
+
+    <script>
+      function changePage(page) {
+        // Hide all pages
+        document.querySelectorAll(".page-container").forEach(function (el) {
+          el.classList.remove("active");
+        });
+
+        // Show selected page
+        document.getElementById(page + "-page").classList.add("active");
+
+        // Update navigation
+        document.querySelectorAll(".nav-item").forEach(function (el) {
+          el.classList.remove("active");
+        });
+
+        // Find the clicked nav item and activate it
+        document.querySelectorAll(".nav-item").forEach(function (el, index) {
+          if (
+            el.textContent
+              .trim()
+              .toLowerCase()
+              .includes(page === "tageseintrag" ? "eingabe" : page)
+          ) {
+            el.classList.add("active");
+          }
+        });
+
+        // Update icons in navigation
+        document
+          .querySelectorAll(".nav-icon svg path")
+          .forEach(function (path) {
+            path.setAttribute("fill", "#999");
+          });
+
+        document
+          .querySelector(".nav-item.active .nav-icon svg path")
+          .setAttribute("fill", "#3A7CA5");
+      }
+
+      // Funktionen für das Zusammenfassungs-Modal
+      function showSummary() {
+        document.getElementById("summary-container").style.display = "flex";
+      }
+
+      function hideSummary() {
+        document.getElementById("summary-container").style.display = "none";
+      }
+
+      function saveAndReturn() {
+        hideSummary();
+        changePage("dashboard");
+      }
+
+      // Event-Listener für Stimmungs-Optionen
+      document.addEventListener("DOMContentLoaded", function () {
+        const radioOptions = document.querySelectorAll(".radio-circle");
+        radioOptions.forEach((option) => {
+          option.addEventListener("click", function () {
+            // Alle Optionen deaktivieren
+            radioOptions.forEach((opt) => {
+              opt.classList.remove("selected");
+            });
+            // Die angeklickte Option aktivieren
+            this.classList.add("selected");
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
