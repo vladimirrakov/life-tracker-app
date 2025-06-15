@@ -605,28 +605,6 @@
               </div>
             </div>
 
-            <!-- <button 
-            type="button" 
-            class="btn" 
-            onclick="showSummary()">
-            Eintrag speichern
-            </button>
-
-            <button 
-            type="button" 
-            class="btn" 
-            onclick="downloadEntryJSON()">
-            Als JSON speichern
-            </button> -->
-
-            <!-- <button
-              type="button"
-              class="btn"
-              onclick="showSummary(); downloadEntryJSON();"
-            >
-              Eintrag speichern und als JSON speichern
-            </button> -->
-
             <button type="button" id="save-eintrag-btn" class="btn">
               Eintrag speichern
             </button>
@@ -991,46 +969,14 @@
     <div id="summary-container" class="summary-container" style="display: none">
       <div class="summary-modal">
         <div class="summary-header">
-          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-            <circle cx="20" cy="20" r="18" fill="#16C172" fillOpacity="0.2" />
-            <path
-              d="M17 24L13 20L11 22L17 28L29 16L27 14L17 24Z"
-              fill="#16C172"
-            />
-          </svg>
           <h3>Eintrag zu speichern</h3>
         </div>
 
-        <div class="summary-item">
-          <div class="summary-label">Datum</div>
-          <div class="summary-value">12.05.2025</div>
-        </div>
-
-        <div class="summary-item">
-          <div class="summary-label">Gewicht</div>
-          <div class="summary-value">78,5 kg</div>
-        </div>
-
-        <div class="summary-item">
-          <div class="summary-label">Blutdruck</div>
-          <div class="summary-value">120/80 mmHg</div>
-        </div>
-
-        <div class="summary-item">
-          <div class="summary-label">Stimmung</div>
-          <div class="summary-value">Neutral 😐</div>
-        </div>
-
-        <div class="summary-item">
-          <div class="summary-label">Aktivität</div>
-          <div class="summary-value">Sport ✓ | 45 Minuten</div>
+        <div id="summary-items">
+          <!-- Dynamically filled by JS -->
         </div>
 
         <div class="summary-actions">
-          <!-- <button class="btn btn-secondary" onclick="hideSummary()">
-            Bearbeiten
-          </button>
-          <button class="btn" onclick="saveAndReturn()">Fertig</button> -->
           <button class="btn btn-secondary" id="summary-bearbeiten-btn">
             Bearbeiten
           </button>

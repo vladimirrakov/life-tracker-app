@@ -115,8 +115,63 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Show summary modal
+// function showSummary() {
+//   document.getElementById("summary-container").style.display = "flex";
+// }
+// Show summary modal and display all form entries
 function showSummary() {
   document.getElementById("summary-container").style.display = "flex";
+  const summaryItems = document.getElementById("summary-items");
+  if (!latestEntryData) return;
+
+  // Map for pretty labels (add more as needed)
+  const labels = {
+    date: "Datum",
+    weight: "Gewicht",
+    bloodPressure: "Blutdruck",
+    heartRate: "Puls",
+    sleepQuality: "Schlafqualität",
+    mealType: "Mahlzeit",
+    calories: "Kalorien",
+    waterIntake: "Wasser (ml)",
+    sportDone: "Sport gemacht",
+    stepsDone: "Schritte gemacht",
+    activityMinutes: "Aktivitätsminuten",
+    mood: "Stimmung",
+    stressLevel: "Stresslevel",
+    notes: "Notizen",
+  };
+
+  // Format values for display
+  function formatValue(key, value) {
+    if (key === "weight" && value) return value + " kg";
+    if (key === "bloodPressure" && value) return value + " mmHg";
+    if (key === "heartRate" && value) return value + " bpm";
+    if (key === "calories" && value) return value + " kcal";
+    if (key === "waterIntake" && value) return value + " ml";
+    if (key === "sportDone") return value ? "Ja" : "Nein";
+    if (key === "stepsDone") return value ? "Ja" : "Nein";
+    if (key === "activityMinutes" && value) return value + " min";
+    if (key === "mood" && value) return value;
+    if (key === "stressLevel" && value) return value + " / 10";
+    if (key === "notes" && value) return value;
+    return value || "-";
+  }
+
+  // Build summary HTML
+  let html = "";
+  Object.keys(labels).forEach((key) => {
+    html += `
+      <div class="summary-item">
+        <div class="summary-label">${labels[key]}</div>
+        <div class="summary-value">${formatValue(
+          key,
+          latestEntryData[key]
+        )}</div>
+      </div>
+    `;
+  });
+  summaryItems.innerHTML = html;
 }
 
 // Hide summary modal

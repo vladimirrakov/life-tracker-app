@@ -724,6 +724,9 @@ select.form-control {
   background-color: var(--light);
   border-radius: 12px;
   padding: 20px;
+  max-height: 90vh;           /* Limit modal height */
+  display: flex;
+  flex-direction: column;
 }
 
 .summary-header {
@@ -736,14 +739,19 @@ select.form-control {
   color: var(--primary);
 }
 
-.summary-item {
-  margin-bottom: 15px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #eee;
+#summary-items {
+  max-height: 45vh;           /* Limit summary content height */
+  overflow-y: auto;           /* Enable vertical scroll */
+  margin-bottom: 10px;
 }
 
-.summary-item:last-child {
-  border-bottom: none;
+/* Optional: Make scrollbars look better */
+#summary-items::-webkit-scrollbar {
+  width: 8px;
+}
+#summary-items::-webkit-scrollbar-thumb {
+  background: #e0e0e0;
+  border-radius: 4px;
 }
 
 .summary-label {
