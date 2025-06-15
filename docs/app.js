@@ -66,13 +66,70 @@ function selectMood(id) {
 let latestEntryData = null;
 
 document.addEventListener("DOMContentLoaded", function () {
+  // Validation for blood pressure and notes
+  const form = document.getElementById("entry-form");
+  const bloodPressureInput = form?.["blood-pressure"];
+  const notesInput = form?.["notes"];
+
+  // Create error message elements if not present
+  if (bloodPressureInput && !document.getElementById("bp-error")) {
+    const bpError = document.createElement("div");
+    bpError.id = "bp-error";
+    bpError.style.color = "red";
+    bpError.style.fontSize = "0.9em";
+    bpError.style.display = "none";
+    bloodPressureInput.parentNode.appendChild(bpError);
+  }
+  if (notesInput && !document.getElementById("notes-error")) {
+    const notesError = document.createElement("div");
+    notesError.id = "notes-error";
+    notesError.style.color = "red";
+    notesError.style.fontSize = "0.9em";
+    notesError.style.display = "none";
+    notesInput.parentNode.appendChild(notesError);
+  }
+
   // Attach event to Save Eintrag button
   const saveEintragBtn = document.getElementById("save-eintrag-btn");
   if (saveEintragBtn) {
     saveEintragBtn.addEventListener("click", function (e) {
       e.preventDefault();
+
+      let valid = true;
+
+      // Blood pressure validation
+      if (bloodPressureInput) {
+        const bpValue = bloodPressureInput.value.trim();
+        const bpError = document.getElementById("bp-error");
+        if (bpValue && !/^\d{2,3}\/\d{2,3}$/.test(bpValue)) {
+          bpError.textContent = 'Bitte im Format "120/80" eingeben.';
+          bpError.style.display = "block";
+          valid = false;
+        } else {
+          bpError.style.display = "none";
+        }
+      }
+
+      // Notes validation (max 500 chars, no HTML tags)
+      if (notesInput) {
+        const notesValue = notesInput.value.trim();
+        const notesError = document.getElementById("notes-error");
+        if (notesValue.length > 500) {
+          notesError.textContent = "Maximal 500 Zeichen erlaubt.";
+          notesError.style.display = "block";
+          valid = false;
+        } else if (/<[a-z][\s\S]*>/i.test(notesValue)) {
+          notesError.textContent = "HTML-Tags sind nicht erlaubt.";
+          notesError.style.display = "block";
+          valid = false;
+        } else {
+          notesError.style.display = "none";
+        }
+      }
+
+      if (!valid) return;
+
       // Collect form data
-      const form = document.getElementById("entry-form");
       latestEntryData = {
         date: form["entry-date"]?.value || "",
         weight: form["weight"]?.value || "",
