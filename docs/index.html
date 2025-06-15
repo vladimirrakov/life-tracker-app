@@ -21,7 +21,12 @@
   <body>
     <div class="header">
       <div class="logo">
-        <img src="img/logo-life-tracker-app-original.png" alt="Life Tracker Logo" width="30" height="30" />
+        <img
+          src="img/logo-life-tracker-app-original.png"
+          alt="Life Tracker Logo"
+          width="30"
+          height="30"
+        />
         <h1>Life Tracker</h1>
       </div>
       <div class="profile-icon">TW</div>
@@ -193,7 +198,7 @@
       <div class="container">
         <h1 class="page-title">Tageseintrag</h1>
 
-        <div class="date-header">
+        <!-- <div class="date-header">
           <h2>Heute erfassen</h2>
           <div class="date-picker">
             <span>12.05.2025</span>
@@ -204,12 +209,12 @@
               />
             </svg>
           </div>
-        </div>
+        </div> -->
 
         <div class="card">
           <div class="card-header">
-            <div class="card-title">Schnellerfassung</div>
-            <div class="card-action">Alles anzeigen</div>
+            <div class="card-title">Durchschnittliche Indikatoren</div>
+            <!-- <div class="card-action">Alles anzeigen</div> -->
           </div>
 
           <div class="stats-grid">
@@ -228,6 +233,47 @@
           <button class="btn" onclick="changePage('tageseintrag')">
             Vollständigen Eintrag erstellen
           </button>
+
+          <!-- Hilfe / FAQ Section -->
+          <section class="hilfe-faq-section" style="margin-top: 2em">
+            <h2>Hilfe / FAQ</h2>
+            <div class="faq-item">
+              <strong>1. Welche Daten muss ich täglich eintragen?</strong>
+              <p>
+                Tragen Sie Ihre aktuellen Werte zu Gesundheit, Ernährung,
+                Aktivität, Stimmung und Umgebung ein.
+              </p>
+            </div>
+            <div class="faq-item">
+              <strong>2. Muss ich alle Felder ausfüllen?</strong>
+              <p>
+                Nein, Sie können auch nur die für Sie relevanten Felder
+                ausfüllen.
+              </p>
+            </div>
+            <div class="faq-item">
+              <strong>3. Wie kann ich meine Stimmung angeben?</strong>
+              <p>
+                Klicken Sie auf einen der Emoji-Buttons, um Ihre aktuelle
+                Stimmung auszuwählen.
+              </p>
+            </div>
+            <div class="faq-item">
+              <strong
+                >4. Was passiert, wenn ich einen Fehler gemacht habe?</strong
+              >
+              <p>
+                Sie können Ihre Angaben jederzeit anpassen und erneut speichern.
+              </p>
+            </div>
+            <div class="faq-item">
+              <strong>5. Werden meine Daten automatisch gespeichert?</strong>
+              <p>
+                Ihre Einträge werden nach dem Speichern im System gesichert und
+                können später eingesehen werden.
+              </p>
+            </div>
+          </section>
         </div>
       </div>
     </div>
@@ -237,21 +283,9 @@
       <div class="container">
         <h1 class="page-title">Tageseintrag</h1>
 
-        <div class="date-header">
-          <h2>Heute erfassen</h2>
-          <div class="date-picker">
-            <span>12.05.2025</span>
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path
-                d="M12 2H11V1H10V2H6V1H5V2H4C3.45 2 3 2.45 3 3V13C3 13.55 3.45 14 4 14H12C12.55 14 13 13.55 13 13V3C13 2.45 12.55 2 12 2ZM12 13H4V6H12V13ZM12 5H4V3H12V5Z"
-                fill="#333333"
-              />
-            </svg>
-          </div>
-        </div>
-
         <div class="recent-entries">
-          <h3>Letzte Einträge <span>Alle anzeigen</span></h3>
+          <!-- <h3>Letzte Einträge <span>Alle anzeigen</span></h3> -->
+          <h3>Letzte Einträge</h3>
           <div class="entry-list">
             <div class="entry-item">
               <h4>Gewicht</h4>
@@ -269,214 +303,334 @@
               <p>11.05.2025</p>
             </div>
             <div class="entry-item">
-              <h4>Schlafstunden</h4>
+              <h4>Schlaf</h4>
               <div class="entry-value">7,5h</div>
+              <p>11.05.2025</p>
+            </div>
+            <div class="entry-item">
+              <h4>Herz</h4>
+              <div class="entry-value">72 bpm</div>
+              <p>11.05.2025</p>
+            </div>
+            <div class="entry-item">
+              <h4>Kalorien</h4>
+              <div class="entry-value">1850 kcal</div>
+              <p>11.05.2025</p>
+            </div>
+            <div class="entry-item">
+              <h4>Wasser</h4>
+              <div class="entry-value">2,1L</div>
+              <p>11.05.2025</p>
+            </div>
+            <div class="entry-item">
+              <h4>Aktivität</h4>
+              <div class="entry-value">45 min</div>
               <p>11.05.2025</p>
             </div>
           </div>
         </div>
 
         <div class="form-container">
-          <div class="form-section">
-            <h3>Körperliche Messungen</h3>
-
-            <div class="form-group">
-              <label for="weight">Gewicht (kg)</label>
-              <input
-                type="number"
-                step="0.1"
-                id="weight"
-                class="form-control"
-                placeholder="z.B. 75.5"
-              />
-            </div>
-
-            <div class="form-group">
-              <label for="blood-pressure">Blutdruck (mmHg)</label>
-              <input
-                type="text"
-                id="blood-pressure"
-                class="form-control input-error"
-                placeholder="z.B. 120/80"
-              />
-              <div class="error-message">
-                Bitte im Format "120/80" eingeben.
+          <form id="entry-form">
+            <div class="date-header">
+              <h2>Datum erfassen</h2>
+              <div class="date-picker">
+                <input
+                  type="date"
+                  id="entry-date"
+                  class="form-control"
+                  value="2025-05-12"
+                  aria-label="Datum auswählen"
+                  name="entry-date"
+                />
               </div>
             </div>
 
-            <div class="form-group">
-              <label for="heart-rate">Herzfrequenz (bpm)</label>
-              <input
-                type="number"
-                id="heart-rate"
-                class="form-control"
-                placeholder="z.B. 72"
-              />
-            </div>
+            <div class="form-section">
+              <h3>Körperliche Messungen</h3>
 
-            <div class="slider-container">
-              <label for="sleep-quality">Schlafqualität</label>
-              <input
-                type="range"
-                min="1"
-                max="10"
-                value="7"
-                class="range-slider"
-                id="sleep-quality"
-              />
-              <div class="range-values">
-                <span>Schlecht</span>
-                <span>Mittel</span>
-                <span>Ausgezeichnet</span>
+              <div class="form-group">
+                <label for="weight">Gewicht (kg)</label>
+                <input
+                  type="number"
+                  step="0.1"
+                  id="weight"
+                  class="form-control"
+                  placeholder="z.B. 75.5"
+                  name="weight"
+                />
               </div>
-            </div>
-          </div>
 
-          <div class="form-section">
-            <h3>Ernährung</h3>
-
-            <div class="form-group">
-              <label for="meal-type">Mahlzeitentyp</label>
-              <div class="select-container">
-                <select id="meal-type" class="form-control">
-                  <option value="">Bitte auswählen</option>
-                  <option value="breakfast">Frühstück</option>
-                  <option value="lunch">Mittagessen</option>
-                  <option value="dinner">Abendessen</option>
-                  <option value="snack">Snack</option>
-                </select>
+              <div class="form-group">
+                <label for="blood-pressure">Blutdruck (mmHg)</label>
+                <input
+                  type="text"
+                  id="blood-pressure"
+                  class="form-control input-error"
+                  placeholder="z.B. 120/80"
+                  name="blood-pressure"
+                />
+                <div class="error-message">
+                  Bitte im Format "120/80" eingeben.
+                </div>
               </div>
-            </div>
 
-            <div class="form-group">
-              <label for="calories">Kalorienaufnahme (kcal)</label>
-              <input
-                type="number"
-                id="calories"
-                class="form-control"
-                placeholder="z.B. 550"
-              />
-            </div>
-
-            <div class="slider-container">
-              <label for="water-intake">Wasserzufuhr (Liter)</label>
-              <input
-                type="range"
-                min="0"
-                max="5"
-                step="0.1"
-                value="1.5"
-                class="range-slider"
-                id="water-intake"
-              />
-              <div class="range-values">
-                <span>0L</span>
-                <span>2.5L</span>
-                <span>5L</span>
+              <div class="form-group">
+                <label for="heart-rate">Herzfrequenz (bpm)</label>
+                <input
+                  type="number"
+                  id="heart-rate"
+                  class="form-control"
+                  placeholder="z.B. 72"
+                  name="heart-rate"
+                />
               </div>
-            </div>
-          </div>
 
-          <div class="form-section">
-            <h3>Aktivität</h3>
-
-            <div class="switch-container">
-              <span class="switch-label">Sport gemacht</span>
-              <label class="switch" title="Sport gemacht">
-                <input type="checkbox" checked title="Sport gemacht" />
-                <span class="slider"></span>
-              </label>
-            </div>
-
-            <div class="switch-container">
-              <span class="switch-label">10.000 Schritte erreicht</span>
-              <label class="switch" title="10.000 Schritte erreicht">
-                <input type="checkbox" title="10.000 Schritte erreicht" />
-                <span class="slider"></span>
-              </label>
-            </div>
-
-            <div class="form-group">
-              <label for="activity-minutes">Aktivitätsminuten</label>
-              <input
-                type="number"
-                id="activity-minutes"
-                class="form-control"
-                placeholder="z.B. 45"
-              />
-            </div>
-          </div>
-
-          <div class="form-section">
-            <h3>Stimmung und mentale Verfassung</h3>
-
-            <div class="form-group">
-              <label>Wie ist deine Stimmung heute?</label>
-              <div class="radio-group">
-                <div class="radio-option">
-                  <div class="radio-circle">
-                    <span>😞</span>
-                  </div>
-                  <span class="radio-label">Schlecht</span>
-                </div>
-                <div class="radio-option">
-                  <div class="radio-circle">
-                    <span>😕</span>
-                  </div>
-                  <span class="radio-label">Mäßig</span>
-                </div>
-                <div class="radio-option">
-                  <div class="radio-circle selected">
-                    <span>😐</span>
-                  </div>
-                  <span class="radio-label">OK</span>
-                </div>
-                <div class="radio-option">
-                  <div class="radio-circle">
-                    <span>🙂</span>
-                  </div>
-                  <span class="radio-label">Gut</span>
-                </div>
-                <div class="radio-option">
-                  <div class="radio-circle">
-                    <span>😊</span>
-                  </div>
-                  <span class="radio-label">Sehr gut</span>
+              <div class="slider-container">
+                <label for="sleep-quality">Schlafqualität</label>
+                <input
+                  type="range"
+                  min="1"
+                  max="10"
+                  value="7"
+                  class="range-slider"
+                  id="sleep-quality"
+                  name="sleep-quality"
+                />
+                <div class="range-values">
+                  <span>Schlecht</span>
+                  <span>Mittel</span>
+                  <span>Ausgezeichnet</span>
                 </div>
               </div>
             </div>
 
-            <div class="slider-container">
-              <label for="stress-level">Stresslevel</label>
-              <input
-                type="range"
-                min="1"
-                max="10"
-                value="4"
-                class="range-slider"
-                id="stress-level"
-              />
-              <div class="range-values">
-                <span>Niedrig</span>
-                <span>Mittel</span>
-                <span>Hoch</span>
+            <div class="form-section">
+              <h3>Ernährung</h3>
+
+              <div class="form-group">
+                <label for="meal-type">Mahlzeitentyp</label>
+                <div class="select-container">
+                  <select id="meal-type" class="form-control" name="meal-type">
+                    <option value="">Bitte auswählen</option>
+                    <option value="breakfast">Frühstück</option>
+                    <option value="lunch">Mittagessen</option>
+                    <option value="dinner">Abendessen</option>
+                    <option value="snack">Snack</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="calories">Kalorienaufnahme (kcal)</label>
+                <input
+                  type="number"
+                  id="calories"
+                  class="form-control"
+                  placeholder="z.B. 550"
+                  name="calories"
+                />
+              </div>
+
+              <div class="slider-container">
+                <label for="water-intake">Wasserzufuhr (Liter)</label>
+                <input
+                  type="range"
+                  min="0"
+                  max="5"
+                  step="0.1"
+                  value="1.5"
+                  class="range-slider"
+                  id="water-intake"
+                  name="water-intake"
+                />
+                <div class="range-values">
+                  <span>0L</span>
+                  <span>2.5L</span>
+                  <span>5L</span>
+                </div>
               </div>
             </div>
 
-            <div class="form-group">
-              <label for="notes">Persönliche Notizen</label>
-              <textarea
-                id="notes"
-                class="form-control"
-                rows="3"
-                placeholder="Notiere hier deine Gedanken, Gefühle oder besondere Ereignisse..."
-              ></textarea>
-            </div>
-          </div>
+            <div class="form-section">
+              <h3>Aktivität</h3>
 
-          <button type="submit" class="btn" onclick="showSummary()">
+              <div class="switch-container">
+                <span class="switch-label">Sport gemacht</span>
+                <label class="switch" title="Sport gemacht">
+                  <input
+                    type="checkbox"
+                    checked
+                    title="Sport gemacht"
+                    id="sport-done"
+                    name="sport-done"
+                  />
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <div class="switch-container">
+                <span class="switch-label">10.000 Schritte erreicht</span>
+                <label class="switch" title="10.000 Schritte erreicht">
+                  <input
+                    type="checkbox"
+                    title="10.000 Schritte erreicht"
+                    id="steps-done"
+                    name="steps-done"
+                  />
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <div class="form-group">
+                <label for="activity-minutes">Aktivitätsminuten</label>
+                <input
+                  type="number"
+                  id="activity-minutes"
+                  class="form-control"
+                  placeholder="z.B. 45"
+                  name="activity-minutes"
+                />
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3>Stimmung und mentale Verfassung</h3>
+
+              <div class="form-group">
+                <label>Wie ist deine Stimmung heute?</label>
+                <div class="radio-group" id="mood-group">
+                  <div class="radio-option">
+                    <input
+                      type="radio"
+                      name="mood"
+                      id="mood-bad"
+                      value="schlecht"
+                      style="display: none"
+                    />
+                    <div class="radio-circle" onclick="selectMood('mood-bad')">
+                      <span>😞</span>
+                    </div>
+                    <span class="radio-label">Schlecht</span>
+                  </div>
+                  <div class="radio-option">
+                    <input
+                      type="radio"
+                      name="mood"
+                      id="mood-meh"
+                      value="mäßig"
+                      style="display: none"
+                    />
+                    <div class="radio-circle" onclick="selectMood('mood-meh')">
+                      <span>😕</span>
+                    </div>
+                    <span class="radio-label">Mäßig</span>
+                  </div>
+                  <div class="radio-option">
+                    <input
+                      type="radio"
+                      name="mood"
+                      id="mood-ok"
+                      value="ok"
+                      checked
+                      style="display: none"
+                    />
+                    <div
+                      class="radio-circle selected"
+                      onclick="selectMood('mood-ok')"
+                    >
+                      <span>😐</span>
+                    </div>
+                    <span class="radio-label">OK</span>
+                  </div>
+                  <div class="radio-option">
+                    <input
+                      type="radio"
+                      name="mood"
+                      id="mood-good"
+                      value="gut"
+                      style="display: none"
+                    />
+                    <div class="radio-circle" onclick="selectMood('mood-good')">
+                      <span>🙂</span>
+                    </div>
+                    <span class="radio-label">Gut</span>
+                  </div>
+                  <div class="radio-option">
+                    <input
+                      type="radio"
+                      name="mood"
+                      id="mood-verygood"
+                      value="sehr gut"
+                      style="display: none"
+                    />
+                    <div
+                      class="radio-circle"
+                      onclick="selectMood('mood-verygood')"
+                    >
+                      <span>😊</span>
+                    </div>
+                    <span class="radio-label">Sehr gut</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="slider-container">
+                <label for="stress-level">Stresslevel</label>
+                <input
+                  type="range"
+                  min="1"
+                  max="10"
+                  value="4"
+                  class="range-slider"
+                  id="stress-level"
+                  name="stress-level"
+                />
+                <div class="range-values">
+                  <span>Niedrig</span>
+                  <span>Mittel</span>
+                  <span>Hoch</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="notes">Persönliche Notizen</label>
+                <textarea
+                  id="notes"
+                  class="form-control"
+                  rows="3"
+                  placeholder="Notiere hier deine Gedanken, Gefühle oder besondere Ereignisse..."
+                  name="notes"
+                ></textarea>
+              </div>
+            </div>
+
+            <!-- <button 
+            type="button" 
+            class="btn" 
+            onclick="showSummary()">
             Eintrag speichern
-          </button>
+            </button>
+
+            <button 
+            type="button" 
+            class="btn" 
+            onclick="downloadEntryJSON()">
+            Als JSON speichern
+            </button> -->
+
+            <!-- <button
+              type="button"
+              class="btn"
+              onclick="showSummary(); downloadEntryJSON();"
+            >
+              Eintrag speichern und als JSON speichern
+            </button> -->
+
+            <button type="button" id="save-eintrag-btn" class="btn">
+              Eintrag speichern
+            </button>
+          </form>
         </div>
       </div>
     </div>
@@ -844,7 +998,7 @@
               fill="#16C172"
             />
           </svg>
-          <h3>Eintrag gespeichert</h3>
+          <h3>Eintrag zu speichern</h3>
         </div>
 
         <div class="summary-item">
@@ -873,10 +1027,14 @@
         </div>
 
         <div class="summary-actions">
-          <button class="btn btn-secondary" onclick="hideSummary()">
+          <!-- <button class="btn btn-secondary" onclick="hideSummary()">
             Bearbeiten
           </button>
-          <button class="btn" onclick="saveAndReturn()">Fertig</button>
+          <button class="btn" onclick="saveAndReturn()">Fertig</button> -->
+          <button class="btn btn-secondary" id="summary-bearbeiten-btn">
+            Bearbeiten
+          </button>
+          <button class="btn" id="summary-fertig-btn">Speichern</button>
         </div>
       </div>
     </div>
