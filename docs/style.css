@@ -757,12 +757,13 @@ select.form-control {
 .summary-label {
   font-size: 14px;
   color: #666;
-  margin-bottom: 5px;
+  margin: 5px 0;
 }
 
 .summary-value {
   font-size: 16px;
   font-weight: 600;
+  margin: 5px 0;
 }
 
 .summary-actions {
